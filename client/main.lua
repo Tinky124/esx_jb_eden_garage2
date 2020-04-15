@@ -1,23 +1,4 @@
--- Local
-local Keys = {
-	["ESC"] = 322, ["F1"] = 288, ["F2"] = 289, ["F3"] = 170, ["F5"] = 166, ["F6"] = 167, ["F7"] = 168, ["F8"] = 169, ["F9"] = 56, ["F10"] = 57, 
-	["~"] = 243, ["1"] = 157, ["2"] = 158, ["3"] = 160, ["4"] = 164, ["5"] = 165, ["6"] = 159, ["7"] = 161, ["8"] = 162, ["9"] = 163, ["-"] = 84, ["="] = 83, ["BACKSPACE"] = 177, 
-	["TAB"] = 37, ["Q"] = 44, ["W"] = 32, ["E"] = 38, ["R"] = 45, ["T"] = 245, ["Y"] = 246, ["U"] = 303, ["P"] = 199, ["["] = 39, ["]"] = 40, ["ENTER"] = 18,
-	["CAPS"] = 137, ["A"] = 34, ["S"] = 8, ["D"] = 9, ["F"] = 23, ["G"] = 47, ["H"] = 74, ["K"] = 311, ["L"] = 182,
-	["LEFTSHIFT"] = 21, ["Z"] = 20, ["X"] = 73, ["C"] = 26, ["V"] = 0, ["B"] = 29, ["N"] = 249, ["M"] = 244, [","] = 82, ["."] = 81,
-	["LEFTCTRL"] = 36, ["LEFTALT"] = 19, ["SPACE"] = 22, ["RIGHTCTRL"] = 70, 
-	["HOME"] = 213, ["PAGEUP"] = 10, ["PAGEDOWN"] = 11, ["DELETE"] = 178,
-	["LEFT"] = 174, ["RIGHT"] = 175, ["TOP"] = 27, ["DOWN"] = 173,
-	["NENTER"] = 201, ["N4"] = 108, ["N5"] = 60, ["N6"] = 107, ["N+"] = 96, ["N-"] = 97, ["N7"] = 117, ["N8"] = 61, ["N9"] = 118
-}
-
 local carInstance = {}
-
-
-
--- Fin Local
-
--- Init ESX
 ESX = nil
 
 Citizen.CreateThread(function()
@@ -27,9 +8,7 @@ Citizen.CreateThread(function()
 		end)
 	end
 end)
-
 --Fonction Menu
-
 function OpenMenuGarage(garage, KindOfVehicle, garage_name, vehicle_type)
 	ESX.UI.Menu.CloseAll()
 
@@ -37,15 +16,11 @@ function OpenMenuGarage(garage, KindOfVehicle, garage_name, vehicle_type)
 		{label = _U('return_vehicle') .. "("..Config.Price.."$)", value = 'return_vehicle'},
 	}
 
-
-	ESX.UI.Menu.Open(
-		'default', GetCurrentResourceName(), 'garage_menu',
-		{
+	ESX.UI.Menu.Open('default', GetCurrentResourceName(), 'garage_menu', {
 			title    = 'Garage',
 			align    = 'top-left',
 			elements = elements,
-		},
-		function(data, menu)
+		},function(data, menu)
 
 			menu.close()
 			if(data.current.value == 'return_vehicle') then
@@ -54,8 +29,7 @@ function OpenMenuGarage(garage, KindOfVehicle, garage_name, vehicle_type)
 		end,
 		function(data, menu)
 			menu.close()
-		end
-	)
+		end)
 end
 -- Afficher les listes des vehicules
 function ListVehiclesMenu(garage, KindOfVehicle, garage_name, vehicle_type)
@@ -94,14 +68,11 @@ function ListVehiclesMenu(garage, KindOfVehicle, garage_name, vehicle_type)
 		else
 			table.insert(elements, {label = _U('no_cars_stored'), value = "nocar"})
 		end
-		ESX.UI.Menu.Open(
-		'default', GetCurrentResourceName(), 'spawn_vehicle',
-		{
+		ESX.UI.Menu.Open('default', GetCurrentResourceName(), 'spawn_vehicle', {
 			title    = 'Garage',
 			align    = 'top-left',
 			elements = elements,
-		},
-		function(data, menu)
+		},function(data, menu)
 			if data.current.value ~= "nocar" then
 				local CarProps = vehiclePropsList[data.current.plate]
 				ESX.UI.Menu.Open('default', GetCurrentResourceName(), 'vehicle_menu', {
@@ -131,14 +102,11 @@ function ListVehiclesMenu(garage, KindOfVehicle, garage_name, vehicle_type)
 								local elem = {}
 								table.insert(elem, {label = _U('yes').." $"..tostring(Config.SwitchGaragePrice) , value = 'transfer_yes'})
 								table.insert(elem, {label =_U('no') , value = 'transfer_no'})
-								ESX.UI.Menu.Open(
-									'default', GetCurrentResourceName(), 'transfer_menu',
-									{
+								ESX.UI.Menu.Open('default', GetCurrentResourceName(), 'transfer_menu', {
 										title    =  _U('want_to_transfer')..": "..data.current.vehicleName.._U('to_your_garage'),
 										align    = 'top-left',
 										elements = elem,
-									},
-									function(data3, menu3)
+									},function(data3, menu3)
 										if data3.current.value == "transfer_yes" then 
 											ESX.TriggerServerCallback('eden_garage:checkMoney', function(hasEnoughMoney)
 												if hasEnoughMoney then
@@ -184,18 +152,15 @@ function ListVehiclesMenu(garage, KindOfVehicle, garage_name, vehicle_type)
 					end,
 					function(data2, menu2)
 						menu2.close()
-					end
-				)
+					end)
 			end
 		end,
 		function(data, menu)
 			menu.close()
-		end
-	)
+		end)
 	end, KindOfVehicle, garage_name, vehicle_type)
 end
 -- Fin Afficher les listes des vehicules
-
 -- Afficher les listes des vehicules de fourriere
 function ListVehiclesFourriereMenu(garage)
 	local elements, vehiclePropsList = {}, {}
@@ -229,8 +194,6 @@ function ListVehiclesFourriereMenu(garage)
 	end)
 end
 -- Fin Afficher les listes des vehicules de fourriere
-
-
 -- Fonction qui permet de rentrer un vehicule
 function StockVehicleMenu(KindOfVehicle, garage_name, vehicle_type)
 	local playerPed  = PlayerPedId()
@@ -289,7 +252,6 @@ function StockVehicleMenu(KindOfVehicle, garage_name, vehicle_type)
 	end
 end
 -- Fin fonction qui permet de rentrer un vehicule 
-
 -- Fonction qui permet de rentrer un vehicule dans fourriere
 function StockVehicleFourriereMenu()
 	local playerPed  = PlayerPedId()
@@ -337,8 +299,6 @@ function StockVehicleFourriereMenu()
 end
 -- Fin fonction qui permet de rentrer un vehicule dans fourriere
 --Fin fonction Menu
-
-
 --Fonction pour spawn vehicule
 function SpawnVehicle(vehicleProps, garage, KindOfVehicle)
 	ESX.Game.SpawnVehicle(vehicleProps.model, {
@@ -358,7 +318,6 @@ function SpawnVehicle(vehicleProps, garage, KindOfVehicle)
 	TriggerServerEvent('eden_garage:modifystate', vehicleProps.plate, false)
 end
 --Fin fonction pour spawn vehicule
-
 --Fonction pour spawn vehicule fourriere mecano
 function SpawnVehicleMecano(vehicleProps, garage)
 	ESX.Game.SpawnVehicle(vehicleProps.model, {
@@ -372,7 +331,6 @@ function SpawnVehicleMecano(vehicleProps, garage)
 	TriggerServerEvent('eden_garage:ChangeStateFromFourriereMecano', vehicleProps, false)
 end
 --Fin fonction pour spawn vehicule fourriere mecano
-
 function ReturnVehicleMenu(garage, KindOfVehicle, garage_name, vehicle_type)
 
 	ESX.TriggerServerCallback('eden_garage:getOutVehicles', function(vehicles)
@@ -406,14 +364,11 @@ function ReturnVehicleMenu(garage, KindOfVehicle, garage_name, vehicle_type)
 			table.insert(elements, {label = _U('no_vehicle_out'), action = 'nothing'})
 		end
 
-		ESX.UI.Menu.Open(
-		'default', GetCurrentResourceName(), 'return_vehicle',
-		{
+		ESX.UI.Menu.Open('default', GetCurrentResourceName(), 'return_vehicle', {
 			title    = 'Garage',
 			align    = 'top-left',
 			elements = elements,
-		},
-		function(data, menu)
+		},function(data, menu)
 			local vehicleProps = vehiclePropsList[data.current.plate]
 			if data.current.action == 'fourrieremecano' then
 				ESX.ShowNotification(_U('see_police_mechanic'))
@@ -497,8 +452,7 @@ function SetVehicleProperties(vehicle, vehicleProps)
             end
         end
     end
-	if vehicleProps.vehicleHeadLight then SetVehicleHeadlightsColour(vehicle, vehicleProps.vehicleHeadLight) end
-	
+	if vehicleProps.vehicleHeadLight then SetVehicleHeadlightsColour(vehicle, vehicleProps.vehicleHeadLight) end	
 end
 
 function GetVehicleProperties(vehicle)
@@ -1018,18 +972,14 @@ AddEventHandler('ft_libs:OnClientReady', function()
 		end
 	end
 end)
-
 -- Fin controle touche
-
 function table.empty (self)
     for _, _ in pairs(self) do
         return false
     end
     return true
 end
-
 --- garage societe
-
 RegisterNetEvent('esx_eden_garage:ListVehiclesMenu')
 AddEventHandler('esx_eden_garage:ListVehiclesMenu', function(garage, society, societygarage)
 	if not IsPedInAnyVehicle(PlayerPedId()) then
@@ -1048,7 +998,6 @@ RegisterNetEvent('esx_eden_garage:StockVehicleMenu')
 AddEventHandler('esx_eden_garage:StockVehicleMenu', function(society, societygarage)
 	StockVehicleMenu(society, societygarage, "car")
 end)
-
 
 RegisterNetEvent('esx_eden_garage:EnableSocietyGarage')
 AddEventHandler('esx_eden_garage:EnableSocietyGarage', function(society, bool)
@@ -1074,5 +1023,3 @@ AddEventHandler('esx_eden_garage:EnableSocietyGarage', function(society, bool)
 		end
 	end
 end)
-
-
